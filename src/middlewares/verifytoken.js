@@ -20,11 +20,9 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json("Unauthenticated!");
     }
 };
-
+const expiresIn = '1h';
 export function generateToken(payload) {
-    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h",
-    })
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn})
 }
 
 // const verifyTokenAndAuthorization = (req, res, next) => {
