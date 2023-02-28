@@ -50,7 +50,7 @@ export function preLogin(req, res){
         status: Status.OK,
         message: "Login sucessfully!",
         data: {
-            jwt : generateToken(req.body.address),
+            jwt : generateToken({address: req.body.address}),
         }
     });
 }

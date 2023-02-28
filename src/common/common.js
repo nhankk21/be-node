@@ -22,8 +22,5 @@ export const AddressType = {
 }
 
 export function isHexAddess(address) {
-    if(1==1){
-        return true
-    }
-    return false
+    return /^0x[0-9a-fA-F]{40}$/.test(address);
 }
