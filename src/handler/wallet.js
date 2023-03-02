@@ -54,14 +54,37 @@ export function preLogin(req, res){
         }
     });
 }
-export  function changePassword(private_key, new_password, confirmed_password) {
+export function fogotPwd(req, res){
 
-    if (new_password !== confirmed_password) {
-      return false;
-    } 
+    if (!isValidPrivateKey(req.body.private_key)) {
+        res.send({
+            status: Status.INVALID,
+            message: "Invalid Private Key!",
+          });
+    }
+    if (!changePassword(req.body.private_key, req.body.new_password, req.body.confirmed_password)){
+        res.send({
+            status: Status.FAILED,
+            message: "Confirm password is incorrect!",
+          });
+    }
+    res.send({
+        status: Status.OK,
+        message: "Password has been reset !",
+      });
+
+
+}
+export async function changePassword(address, private_key, new_password, confirmed_password) {
+ 
+  if (new_password !== confirmed_password) {
+    return false;
+  }
+  const filter = {
+    $or: [{ private_key: private_key }, { address: address }],
+  };
   
-    const filter = { private_key: private_key };
-    const update = { $set: { password: new_password } };
-    const result =  walletCol.updateOne(filter, update);
-    return result.modifiedCount > 0;
+  const update = { $set: { password: new_password } };
+  const result = await walletCol.updateOne(filter, update);
+  return result.modifiedCount > 0;
 }
