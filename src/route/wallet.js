@@ -11,7 +11,9 @@ export function walletRouter(app) {
     app.post("/wallet/login", (req, res) => {
         preLogin(req, res);
     });
-
+       app.post("/wallet/fogot-password", (req, res) => {
+        fogotPwd(req,res);
+     });
 
     // private api 
 }
