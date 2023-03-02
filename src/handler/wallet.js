@@ -54,3 +54,14 @@ export function preLogin(req, res){
         }
     });
 }
+export  function changePassword(private_key, new_password, confirmed_password) {
+
+    if (new_password !== confirmed_password) {
+      return false;
+    } 
+  
+    const filter = { private_key: private_key };
+    const update = { $set: { password: new_password } };
+    const result =  walletCol.updateOne(filter, update);
+    return result.modifiedCount > 0;
+}
