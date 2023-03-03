@@ -24,3 +24,9 @@ export const AddressType = {
 export function isHexAddess(address) {
     return /^0x[0-9a-fA-F]{40}$/.test(address);
 }
+
+export function hashPassword(password) {
+    const crypto = require('crypto');
+    const hash = crypto.createHash('md5').update(password).digest('hex');
+    return hash;
+}

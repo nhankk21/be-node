@@ -4,15 +4,17 @@ import { walletCol } from "../database/mongodb.js";
 import {isHexAddess, Status} from "../common/common.js";
 import { generateToken } from "../middlewares/verifytoken.js";
 import { login } from "../business/wallet/authen.js";
+import { hashPassword } from "../common/common.js";
 
 
 export async function getNewWallet(req, res){
     const address = getNewAddress();
     const private_key = getNewPrivateKey();
+    const new_password = hashPassword(req.body.password);
     const wallet = {
         address: address,
         private_key: private_key,
-        password: req.body.password,
+        password: new_password,
         balance: 0,
         created: Date.now(),
         updated: Date.now(),
@@ -40,7 +42,7 @@ export function preLogin(req, res){
             message: "Invalid address or password!",
           });
     }
-    if(!login(req.body.address, req.body.password)) {
+    if(!login(req.body.address, new_password)) {
         res.send({
             status: Status.FAILED,
             message: "Login failed!",
